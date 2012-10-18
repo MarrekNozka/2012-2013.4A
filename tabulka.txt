@@ -1,0 +1,8 @@
+# tabulka
+@ titulek='Toto je můj graf'
+
+u[V]   0   1  2  3 4 5
+i[mA]  10 12 40 15 4 18
+i2[mA] 1 14  20 8  8 12
+
+# konec
