@@ -21,6 +21,8 @@ def exit(event=None):
 def goo(value):
     color = "#{:02x}{:02x}{:02x}".format(scaleR.get(),scaleG.get(),scaleB.get())
     colorPanel.config(bg=color)
+    # změním hodnotu ve vstupním poli htmlValue, protože je svázána s textArray
+    textArray.set(color)
 
 ####################################################
 
@@ -38,6 +40,11 @@ scaleB = Scale(mainWin, from_=0, to=255, orient=HORIZONTAL, length=200,
                label='modrá', command=goo)   
 scaleB.pack()  
  
+# proměná, kterou svážu s údajem ve vstupním poli htmlValue
+textArray = StringVar()
+htmlValue = Entry(mainWin, textvariable=textArray )
+htmlValue.pack()
+
 colorPanel = Canvas(mainWin, bg='red', height=200, width=200)
 colorPanel.pack()
 
