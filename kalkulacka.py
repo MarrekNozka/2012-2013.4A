@@ -10,6 +10,7 @@
 import sys
 from sys import stdin, stdout, stderr
 from Tkinter import *
+import cmath  # počítání s komplexními čísly
 ####################################################
 
 def exit(event=None):
@@ -18,8 +19,12 @@ def exit(event=None):
 stack = []
 # vloží do zásobníku a do Listboxu číslo
 def push(item):
-    stack.append(complex(item))
-    box.insert(END, str(item))
+    try:
+        stack.append(complex(item))
+        box.insert(END, str(item))
+        return True
+    except:
+        return False
 
 def pop():
     box.delete(END)
@@ -40,15 +45,37 @@ def goo(event=None):
             a = pop()
             b = pop()
             push(a*b)
+        elif token == '/':
+            a = pop()
+            b = pop()
+            push(b/a)
+        elif token == '-':
+            a = pop()
+            b = pop()
+            push(b-a)
+        elif token == 'log':
+            a = pop()
+            push(cmath.log10(a))
+        elif token == 'ln':
+            a = pop()
+            push(cmath.log(a))
+        elif token == 'pi':
+            push(cmath.pi)
+        elif token == 'e':
+            push(cmath.e)
         else:
-            push(token)
+            if push(token):
+                lblMsg.config(text="OK", fg='black')
+            else:
+                lblMsg.config(text="Chyba", fg='red')
+
 
 
 ####################################################
 
 mainWin = Tk(className="foo")
 mainWin.title("Kalkulacka")
-mainWin.option_add('*Font', 'Terminus 14')
+mainWin.option_add('*Font', 'Terminus 16')
 
 # při stisku Esc se aplikace zavře
 mainWin.bind("<Escape>",exit)
@@ -58,6 +85,9 @@ lbl.pack()
 
 box = Listbox(mainWin, width=20, height=10)
 box.pack()
+
+lblMsg = Label(mainWin, text=u"...")
+lblMsg.pack()
 
 edt = Entry(mainWin, width=20)
 edt.pack()
