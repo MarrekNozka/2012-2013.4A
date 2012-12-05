@@ -7,7 +7,7 @@
 # Úloha:   grafická kalkulačka s reverzní notací
 ####################################################
 
-import sys
+import sys, cmath, math
 from sys import stdin, stdout, stderr
 from Tkinter import *
 import cmath  # počítání s komplexními čísly
@@ -19,10 +19,23 @@ def exit(event=None):
 stack = []
 # vloží do zásobníku a do Listboxu číslo
 def push(item):
+    item = item.replace('pi','3.141592653589793')
+    item = item.replace('e','2.718281828459045')
     try:
-        stack.append(complex(item))
-        box.insert(END, str(item))
-        return True
+        if item.count(',')==1:
+            num = item.split(',')
+            stack.append( float(num[0]) + float(num[1])*1j )
+            box.insert(END, str(stack[-1]))
+            return True
+        elif item.count('(')==1:
+            num = item.split('(')
+            stack.append( float(num[0]) * cmath.exp( float(num[1])*1j ) )
+            box.insert(END, str(stack[-1]))
+            return True
+        else:
+            stack.append(complex(item))
+            box.insert(END, str(item))
+            return True
     except:
         return False
 
@@ -68,6 +81,14 @@ def goo(event=None):
                 lblMsg.config(text="OK", fg='black')
             else:
                 lblMsg.config(text="Chyba", fg='red')
+                err = token + token.join( line.split(token)[1:] )
+                edt.delete(0,END)
+                edt.insert(0,err)
+                edt.icursor(0)
+                edt.selection_from(0)
+                edt.selection_to(len(token))
+                break 
+
 
 
 
