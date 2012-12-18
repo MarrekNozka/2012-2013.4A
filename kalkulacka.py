@@ -19,8 +19,9 @@ def exit(event=None):
 stack = []
 # vloží do zásobníku a do Listboxu číslo
 def push(item):
-    item = item.replace('pi','3.141592653589793')
-    item = item.replace('e','2.718281828459045')
+    if item == 'pi':
+        item = item.replace('pi','3.141592653589793')
+        item = item.replace('e','2.718281828459045')
     try:
         if item.count(',')==1:
             num = item.split(',')
@@ -36,7 +37,7 @@ def push(item):
             stack.append(complex(item))
             box.insert(END, str(item))
             return True
-    except:
+    except EOFError:
         return False
 
 def pop():
