@@ -16,6 +16,24 @@ from Tkinter import *
 def exit(event=None):
     sys.exit(0)
 
+def vypisMenu(a,b,c):
+    nasobekEntry.config(state=NORMAL)
+    nasobekEntry.delete(0,END)
+    nasobekEntry.insert(0,meny[ menaVar.get() ][1])
+
+    nakupEntry.config(state=NORMAL)
+    nakupEntry.delete(0,END)
+    nakupEntry.insert(0,meny[ menaVar.get() ][2])
+
+    prodejEntry.config(state=NORMAL)
+    prodejEntry.delete(0,END)
+    prodejEntry.insert(0,meny[ menaVar.get() ][3])
+
+
+def vypocet():
+#    kurz = mena [ nakupVar.get() ] [  ]
+    pass
+
 
 ####################################################
 
@@ -29,16 +47,16 @@ mainWin.bind("<Escape>",exit)
 operaceGroup = LabelFrame(mainWin, text="Operace", padx=5, pady=5)
 operaceGroup.pack(anchor=W)
 
-v = IntVar() 
-v.set(2)
-operace1 = Radiobutton(operaceGroup, text="Jednaaaaaa", variable=v, value=1)
-operace2 = Radiobutton(operaceGroup, text="Dva", variable=v, value=2)
+nakupVar = IntVar() 
+nakupVar.set(2)
+operace1 = Radiobutton(operaceGroup, text="Nákup", variable=nakupVar, value=1)
+operace2 = Radiobutton(operaceGroup, text="Prodej", variable=nakupVar, value=2)
 operace1.pack(anchor=W)
 operace2.pack(anchor=W)
 
 ####################################################
 # výběr měny
-menaGroup = LabelFrame(mainWin, text="Operace", padx=5, pady=5)
+menaGroup = LabelFrame(mainWin, text="Měna", padx=5, pady=5)
 menaGroup.pack(anchor=W)
 
 meny = (
@@ -54,31 +72,43 @@ meny = (
 menaVar = IntVar()
 menaVar.set(0)
 
-for n,item in enumerate(meny):
-    RB = Radiobutton(menaGroup,text=item[0], variable=menaVar, value=n)
-    RB.pack(anchor=W)
-
+#for n,item in enumerate(meny):
+#    RB = Radiobutton(menaGroup,text=item[0], variable=menaVar, value=n)
+#    RB.pack(anchor=W)
 i=0
 while i<len(meny):
     RB = Radiobutton(menaGroup,text=meny[i][0], variable=menaVar, value=i)
     RB.pack(anchor=W)
     i += 1
 
+# při změně proměnní menaVar zavolej funkci vypisMenu()
+menaVar.trace("w", vypisMenu )
 
 #  meny[menaVar.get()][3]
-
-
-
 ####################################################
+zapakovat=[]
+zapakovat += [ LabelFrame(mainWin, text="Násobek", padx=5, pady=5) ]
+zapakovat += [ LabelFrame(mainWin, text="Nákup", padx=5, pady=5) ]
+zapakovat += [ LabelFrame(mainWin, text="Prodej", padx=5, pady=5) ]
 
-s= StringVar()
-s.set("B")
-a = Radiobutton(menaGroup, text="A", variable=s, value="A")
-b = Radiobutton(menaGroup, text="B", variable=s, value="B")
-c = Radiobutton(menaGroup, text="C", variable=s, value="C")
-a.pack(anchor=W)
-b.pack(anchor=W)
-c.pack(anchor=W)
+nasobekEntry = Entry(zapakovat[0], state="readonly")
+nakupEntry = Entry(zapakovat[1], state="readonly")
+prodejEntry = Entry(zapakovat[2], state="readonly")
+zapakovat += [nasobekEntry, nakupEntry, prodejEntry ]
+
+zapakovat += [ LabelFrame(mainWin, text=u"Částka", padx=5, pady=5) ]
+castkaEntry = Entry( zapakovat[-1], state=NORMAL)
+# když stisknu Enter proveď funkci výpočet()
+castkaEntry.bind("<Return>",vypocet)
+
+
+zapakovat += [ LabelFrame(mainWin, text=u"Výpočet", padx=5, pady=5) ]
+vypocetEntry = Entry(zapakovat[-1], state="readonly")
+
+zapakovat += [ castkaEntry, vypocetEntry ]
+
+for Q in zapakovat:
+    Q.pack(anchor=W)
 
 mainWin.mainloop()
 
