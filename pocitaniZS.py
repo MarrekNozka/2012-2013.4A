@@ -80,9 +80,11 @@ def kontrola(event):
         else:
             lblOK.config(text=';-(')
         celkem +=1
-# po tom, co jsem kontroloval generuji nový příklad
+# vymažu vstupní pole
         vysledekEntry.delete(0,END)
+# vypíšu statustiku
         lblStat.config(text='{0}/{1}'.format(dobre,celkem))
+# po tom, co jsem kontroloval generuji nový příklad
         novyPriklad()
     except:
         lblOK.config(text='Zadej číslo')
